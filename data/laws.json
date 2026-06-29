@@ -1,0 +1,435 @@
+[
+  {
+    "id": "uk-osa-2023",
+    "title": "Online Safety Act 2023",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2024-01-31",
+    "summary": "Requires platforms to implement robust age verification to prevent children accessing harmful content. Enforced by Ofcom with fines up to £18m or 10% of global revenue.",
+    "fines": "Up to £18 million or 10% of global annual revenue",
+    "authority": "Ofcom",
+    "url": "https://www.legislation.gov.uk/ukpga/2023/50/contents",
+    "tags": [
+      "pornography",
+      "social media",
+      "children",
+      "platforms"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "eu-dsa-2022",
+    "title": "Digital Services Act (DSA)",
+    "country": "European Union",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2024-02-17",
+    "summary": "Requires very large online platforms to implement age verification for minors and restrict targeted advertising to children. Non-compliance fines up to 6% of global turnover.",
+    "fines": "Up to 6% of global annual turnover",
+    "authority": "European Commission / National DSCs",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32022R2065",
+    "tags": [
+      "platforms",
+      "advertising",
+      "children",
+      "VLOP"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "us-coppa-1998",
+    "title": "Children's Online Privacy Protection Act (COPPA)",
+    "country": "United States",
+    "region": "Americas",
+    "status": "Active",
+    "effective_date": "2000-04-21",
+    "summary": "Federal law requiring websites to obtain verifiable parental consent before collecting personal information from children under 13. FTC enforces with significant penalties.",
+    "fines": "Up to $51,744 per violation",
+    "authority": "FTC (Federal Trade Commission)",
+    "url": "https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa",
+    "tags": [
+      "privacy",
+      "children",
+      "parental consent",
+      "data"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "us-kosa-2024",
+    "title": "Kids Online Safety Act (KOSA)",
+    "country": "United States",
+    "region": "Americas",
+    "status": "Active",
+    "effective_date": "2024-07-30",
+    "summary": "Signed into law July 2024. Requires platforms to implement default privacy settings for minors and provide parental controls. Platforms must minimize data collection and addictive design.",
+    "fines": "Up to $50,000 per violation per day",
+    "authority": "FTC",
+    "url": "https://www.congress.gov/bill/118th-congress/senate-bill/1409",
+    "tags": [
+      "social media",
+      "children",
+      "privacy",
+      "safety"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "au-osa-2024",
+    "title": "Online Safety Amendment (Social Media Minimum Age) Act 2024",
+    "country": "Australia",
+    "region": "Asia-Pacific",
+    "status": "Active",
+    "effective_date": "2025-07-01",
+    "summary": "Bans children under 16 from using social media platforms. Platforms must take reasonable steps to verify ages. Fines for systematic non-compliance.",
+    "fines": "Up to AUD $49.5 million for systemic breaches",
+    "authority": "ACMA (Australian Communications and Media Authority)",
+    "url": "https://www.legislation.gov.au/",
+    "tags": [
+      "social media",
+      "under 16",
+      "ban",
+      "children"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "fr-av-2023",
+    "title": "French Age Verification Decree (Pornography)",
+    "country": "France",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2023-10-01",
+    "summary": "Requires pornographic websites to implement robust age verification for French users. Arcom (formerly CSA) can order ISPs to block non-compliant sites.",
+    "fines": "Site blocking by ISPs; criminal penalties",
+    "authority": "Arcom",
+    "url": "https://www.arcom.fr/",
+    "tags": [
+      "pornography",
+      "blocking",
+      "children"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "de-juschg-2021",
+    "title": "Youth Protection Act (JuSchG) 2021 Reform",
+    "country": "Germany",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2021-05-01",
+    "summary": "Expanded German youth protection to online platforms. Requires age classification and appropriate access controls for harmful content online.",
+    "fines": "Up to €50 million",
+    "authority": "KJM (Commission for Youth Media Protection)",
+    "url": "https://www.bmj.de/",
+    "tags": [
+      "youth protection",
+      "platforms",
+      "classification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "ca-bill-c63-2024",
+    "title": "Online Harms Act (Bill C-63)",
+    "country": "Canada",
+    "region": "Americas",
+    "status": "Proposed",
+    "effective_date": "TBD",
+    "summary": "Proposed Canadian legislation requiring age-appropriate design and verification for children. Creates a Digital Safety Commission. Currently progressing through Parliament.",
+    "fines": "Up to CAD $10 million or 3% of global revenue",
+    "authority": "Digital Safety Commission (proposed)",
+    "url": "https://www.canada.ca/en/department-justice/news/2024/02/government-of-canada-introduces-online-harms-act.html",
+    "tags": [
+      "online harms",
+      "children",
+      "proposed",
+      "social media"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "sg-copa-2022",
+    "title": "Code of Practice for Online Safety (Singapore)",
+    "country": "Singapore",
+    "region": "Asia-Pacific",
+    "status": "Active",
+    "effective_date": "2023-07-18",
+    "summary": "Requires major social media services operating in Singapore to implement safety measures including age verification and child safety tools.",
+    "fines": "Up to SGD $1 million per breach",
+    "authority": "IMDA (Infocomm Media Development Authority)",
+    "url": "https://www.imda.gov.sg/",
+    "tags": [
+      "social media",
+      "children",
+      "safety"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "uk-aadc-2020",
+    "title": "Age Appropriate Design Code (Children's Code)",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2021-09-02",
+    "summary": "ICO code requiring services likely to be accessed by children to apply default privacy settings and restrict data profiling. Enforced via UK GDPR.",
+    "fines": "Up to £17.5 million or 4% of global turnover under UK GDPR",
+    "authority": "ICO (Information Commissioner's Office)",
+    "url": "https://ico.org.uk/for-organisations/childrens-code-hub/",
+    "tags": [
+      "privacy",
+      "children",
+      "design",
+      "data"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "us-louisiana-hb142",
+    "title": "Louisiana HB 142 (Age Verification for Pornography)",
+    "country": "United States",
+    "region": "Americas",
+    "status": "Active",
+    "effective_date": "2023-01-01",
+    "summary": "First US state law requiring websites publishing pornographic content to verify users are over 18. Basis for similar laws in other US states.",
+    "fines": "Civil liability; nominal damages",
+    "authority": "Louisiana Attorney General",
+    "url": "https://legis.la.gov/",
+    "tags": [
+      "pornography",
+      "state law",
+      "USA",
+      "18+"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "eu-gdpr-children",
+    "title": "GDPR Article 8 (Children's Consent)",
+    "country": "European Union",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2018-05-25",
+    "summary": "Sets the age of digital consent at 16 (or 13–15 depending on member state). Services must verify age and obtain parental consent for children below the threshold.",
+    "fines": "Up to €20 million or 4% of global annual turnover",
+    "authority": "National Data Protection Authorities",
+    "url": "https://gdpr.eu/article-8-conditions-applicable-to-childs-consent/",
+    "tags": [
+      "GDPR",
+      "privacy",
+      "consent",
+      "children"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "ce175f7ba2",
+    "title": "Did the EU Parliament really vote not to protect children online?",
+    "country": "Europe",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2026-05-11",
+    "summary": "In April 2026, negotiations on the ‘interim ePrivacy derogation’ fell apart, with several stakeholders claiming that the European Parliament stopped the EU from protecting children. In reality, however, the Parliament’s position aimed to ensure the protection of all fundamental rights without leading to mass surveillance – whereas EU Member States and the Commission proved unwilling to move even an inch on safeguards. The post Did the EU Parliament really vote not to protect children online? app",
+    "fines": "See source for details",
+    "authority": "EDRi",
+    "url": "https://edri.org/our-work/did-the-eu-parliament-really-vote-not-to-protect-children-online/",
+    "tags": [
+      "children online"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "2525d6fc74",
+    "title": "Announcing the Summit “Fight for Us, not for Them”: A public interest vision for EU tech policy",
+    "country": "Europe",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2026-04-30",
+    "summary": "Europe’s approach to governance for advancing technology in the digital age is under pressure, with “simplification” proposals hitting the heart of core digital protections. At the same time, civil society is uniquely positioned to co-develop the EU’s vision for public-interest tech laws, policies and practices. Today, civil society organisations announce a strategic convening between European lawmakers, regulators, journalists and key civil society voices for a vision for tech laws and practice",
+    "fines": "See source for details",
+    "authority": "EDRi",
+    "url": "https://edri.org/our-work/announcing-the-summit-fight-for-us-not-for-them-a-public-interest-vision-for-eu-tech-policy/",
+    "tags": [
+      "digital age"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "0ec3cbb059",
+    "title": "Some kids are bypassing age-verification checks with a fake mustache",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-05-06",
+    "summary": "A new survey found that kids find it easy to bypass age checks, despite a rise in age-verification laws around the world.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2026/05/06/some-kids-are-bypassing-age-verification-checks-with-a-fake-mustache/",
+    "tags": [
+      "age check"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "32a780bb6a",
+    "title": "Discord delays global rollout of age verification after backlash",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-02-24",
+    "summary": "The company added that 90% of users won’t need to verify their age and will be able to keep using Discord as usual.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2026/02/24/discord-delays-global-rollout-of-age-verification-after-backlash/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "7fb27e1463",
+    "title": "Discord to roll out age verification next month",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-02-09",
+    "summary": "All users will be put into a \"teen-appropriate experience\" by default unless they prove that they are adults.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2026/02/09/discord-to-roll-out-age-verification-next-month-for-full-access-to-its-platform/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "a7cb9bd093",
+    "title": "Here’s how Roblox’s age checks work",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-02-06",
+    "summary": "The company says it has continuous age-check systems running in the background to ensure age accuracy.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2026/02/06/heres-how-robloxs-age-checks-work/",
+    "tags": [
+      "age check"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "d25da97117",
+    "title": "Roblox now requires all users globally to complete age checks to access chat",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-01-07",
+    "summary": "Once users complete an age check, they can access age-based chat, which means they can only communicate with others in a similar age group.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2026/01/07/roblox-now-requires-all-users-globally-to-complete-age-checks-to-access-chat/",
+    "tags": [
+      "age check"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "371a8d0a3b",
+    "title": "Bluesky rolls out age verification for users in Ohio",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2025-09-29",
+    "summary": "Users in Ohio will have to verify their age to use Bluesky's social network as of Monday.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2025/09/29/bluesky-rolls-out-age-verification-for-users-in-ohio/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "d6180681d6",
+    "title": "TruSources to show off its on-device identity-checking tech at TechCrunch Disrupt 2025",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2025-09-26",
+    "summary": "Age-verification laws are a privacy and security nightmare. This startup performs age checks on-device, without users having to upload their IDs to the internet.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2025/09/26/trusources-to-show-off-its-on-device-identity-checking-tech-at-techcrunch-disrupt-2025/",
+    "tags": [
+      "age check"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "71ada3bcac",
+    "title": "SCOTUS porn ruling opens door to sweeping internet age verification",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2025-06-27",
+    "summary": "Age verification in this context does not mean mindlessly clicking a box to declare that you are an adult — it means uploading government ID documents or using third-party verification platforms to prove your age.",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2025/06/27/scotus-porn-ruling-opens-door-to-sweeping-internet-age-verification/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "874fe683e5",
+    "title": "Pornhub disables access in Texas due to age verification law",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2024-03-14",
+    "summary": "Texas residents can no longer access Pornhub — without a VPN. As of Thursday, when people in Texas try to access any of the porn sites owned by Aylo, formerly MindGeek, they’ll instead see a long message in opposition to age verification laws. Laws requiring age verification on adult entertainment sites have already gone into […]",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2024/03/14/pornhub-disables-access-in-texas-due-to-age-verification-law/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "3e56056fcb",
+    "title": "Texas cannot yet enforce ID checks on porn sites",
+    "country": "Global",
+    "region": "Global",
+    "status": "Proposed",
+    "effective_date": "2023-08-31",
+    "summary": "A Texas judge issued an injunction today to stall the enforcement of an online age verification bill. The Free Speech Coalition, along with adult video sites like Pornhub, led the legal challenge against Texas’ HB 1181, arguing that the bill violates the First Amendment and infringes on rights guaranteed by Section 230. “The Court agrees […]",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2023/08/31/texas-cannot-yet-enforce-id-checks-on-porn-sites/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  },
+  {
+    "id": "1f437d7125",
+    "title": "Pornhub blocks access in Mississippi, Virginia and Utah amid changing laws",
+    "country": "Global",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2023-07-03",
+    "summary": "Pornhub is blocking access from users in Mississippi, Virginia and Utah, which have recently passed laws that require age verification to access adult websites. Similar legislation went into effect in Louisiana at the start of the year. To comply, Pornhub required visitors to verify their age with the LA Wallet app, a digital wallet for […]",
+    "fines": "See source for details",
+    "authority": "TechCrunch",
+    "url": "https://techcrunch.com/2023/07/03/pornhub-blocks-access-in-mississippi-virginia-and-utah-amid-changing-laws/",
+    "tags": [
+      "age verification"
+    ],
+    "last_updated": "2026-06-29"
+  }
+]

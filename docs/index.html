@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌍 Global Age Verification Law Tracker</title>
+  <meta name="description" content="Track every age verification law, regulation, fine, and update from around the world — always current, updated daily." />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --yellow: #d29922;
+      --red: #f85149;
+      --purple: #bc8cff;
+      --orange: #ffa657;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+    }
+    header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; margin-bottom: 0.4rem; }
+    header p.subtitle { color: var(--muted); font-size: 1rem; }
+    .badge {
+      display: inline-block; margin-top: 0.8rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 0.25rem 0.9rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .badge span { color: var(--green); font-weight: 600; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      justify-content: center;
+      padding: 1.2rem 1.5rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-card {
+      text-align: center; padding: 0.6rem 1.4rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; min-width: 120px;
+    }
+    .stat-card .num { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+    .stat-card .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ── Controls ── */
+    .controls {
+      max-width: 1400px; margin: 1.5rem auto; padding: 0 1.5rem;
+      display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+    }
+    .controls input[type=text] {
+      flex: 1 1 260px;
+      padding: 0.55rem 1rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text); font-size: 0.95rem;
+    }
+    .controls select {
+      padding: 0.55rem 1rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text); font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .controls input:focus, .controls select:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+    /* ── Grid ── */
+    .grid {
+      max-width: 1400px; margin: 0 auto; padding: 0 1.5rem 3rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1rem;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      transition: border-color 0.2s, transform 0.15s;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+    .card-title { font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; }
+    .card-title a { color: inherit; text-decoration: none; }
+    .card-title a:hover { color: var(--accent); }
+
+    .status-badge {
+      font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+      border-radius: 20px; white-space: nowrap; text-transform: uppercase;
+    }
+    .status-Active    { background: #1a3a1a; color: var(--green); border: 1px solid #2d5a2d; }
+    .status-Proposed  { background: #2d2a1a; color: var(--yellow); border: 1px solid #5a4a1a; }
+    .status-Suspended { background: #3a1a1a; color: var(--red); border: 1px solid #5a2a2a; }
+    .status-Updated   { background: #1a1a3a; color: var(--purple); border: 1px solid #2a2a5a; }
+
+    .card-meta {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.25rem; }
+    .card-summary { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
+    .card-fines {
+      font-size: 0.82rem;
+      background: #2d2010; border: 1px solid #5a3a10;
+      border-radius: 5px; padding: 0.4rem 0.7rem;
+      color: var(--orange);
+    }
+    .card-fines strong { color: var(--orange); }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
+    .tag {
+      font-size: 0.7rem; padding: 0.15rem 0.5rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 3px; color: var(--muted);
+    }
+    .card-footer { margin-top: auto; padding-top: 0.4rem; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--border); }
+
+    /* ── No results ── */
+    .no-results { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted); font-size: 1.1rem; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem; color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌍 Global Age Verification Law Tracker</h1>
+  <p class="subtitle">Every age verification law, regulation, fine &amp; update — worldwide</p>
+  <div class="badge">🤖 Fully automated &nbsp;|&nbsp; <span>Updated daily</span> &nbsp;|&nbsp; Last run: 29 June 2026, 21:13 UTC</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="num">25</div>
+    <div class="label">Total Laws</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="num">4</div>
+    <div class="label">Americas</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="num">2</div>
+    <div class="label">Asia-Pacific</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="num">8</div>
+    <div class="label">Europe</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="num">11</div>
+    <div class="label">Global</div>
+  </div>
+  
+  
+  <div class="stat-card">
+    <div class="num" style="color: var(--green)">23</div>
+    <div class="label">Active</div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="num" style="color: var(--yellow)">2</div>
+    <div class="label">Proposed</div>
+  </div>
+  
+</div>
+
+<div class="controls">
+  <input type="text" id="searchInput" placeholder="🔍  Search laws, countries, keywords..." oninput="filterCards()" />
+  <select id="regionFilter" onchange="filterCards()">
+    <option value="">All Regions</option>
+    <option value="Americas">Americas</option><option value="Asia-Pacific">Asia-Pacific</option><option value="Europe">Europe</option><option value="Global">Global</option>
+  </select>
+  <select id="statusFilter" onchange="filterCards()">
+    <option value="">All Statuses</option>
+    <option value="Active">Active</option><option value="Proposed">Proposed</option>
+  </select>
+  <select id="sortFilter" onchange="filterCards()">
+    <option value="updated">Sort: Latest Updated</option>
+    <option value="title">Sort: Title A–Z</option>
+    <option value="effective">Sort: Effective Date</option>
+  </select>
+</div>
+
+<div class="grid" id="grid">
+  
+  <div class="card"
+    data-title="online safety act 2023"
+    data-country="united kingdom"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="requires platforms to implement robust age verification to prevent children accessing harmful content. enforced by ofcom with fines up to £18m or 10% of global revenue."
+    data-tags="pornography social media children platforms"
+    data-updated="2026-06-29"
+    data-effective="2024-01-31"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.legislation.gov.uk/ukpga/2023/50/contents" target="_blank" rel="noopener">Online Safety Act 2023</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 United Kingdom</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2024-01-31</span>
+      
+      
+      <span class="meta-item">🏛️ Ofcom</span>
+      
+    </div>
+
+    <p class="card-summary">Requires platforms to implement robust age verification to prevent children accessing harmful content. Enforced by Ofcom with fines up to £18m or 10% of global revenue.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to £18 million or 10% of global annual revenue</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#pornography</span><span class="tag">#social_media</span><span class="tag">#children</span><span class="tag">#platforms</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="digital services act (dsa)"
+    data-country="european union"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="requires very large online platforms to implement age verification for minors and restrict targeted advertising to children. non-compliance fines up to 6% of global turnover."
+    data-tags="platforms advertising children vlop"
+    data-updated="2026-06-29"
+    data-effective="2024-02-17"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32022R2065" target="_blank" rel="noopener">Digital Services Act (DSA)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 European Union</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2024-02-17</span>
+      
+      
+      <span class="meta-item">🏛️ European Commission / National DSCs</span>
+      
+    </div>
+
+    <p class="card-summary">Requires very large online platforms to implement age verification for minors and restrict targeted advertising to children. Non-compliance fines up to 6% of global turnover.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to 6% of global annual turnover</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#platforms</span><span class="tag">#advertising</span><span class="tag">#children</span><span class="tag">#VLOP</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="children's online privacy protection act (coppa)"
+    data-country="united states"
+    data-region="Americas"
+    data-status="Active"
+    data-summary="federal law requiring websites to obtain verifiable parental consent before collecting personal information from children under 13. ftc enforces with significant penalties."
+    data-tags="privacy children parental consent data"
+    data-updated="2026-06-29"
+    data-effective="2000-04-21"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa" target="_blank" rel="noopener">Children's Online Privacy Protection Act (COPPA)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 United States</span>
+      <span class="meta-item">📍 Americas</span>
+      
+      <span class="meta-item">📅 2000-04-21</span>
+      
+      
+      <span class="meta-item">🏛️ FTC (Federal Trade Commission)</span>
+      
+    </div>
+
+    <p class="card-summary">Federal law requiring websites to obtain verifiable parental consent before collecting personal information from children under 13. FTC enforces with significant penalties.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to $51,744 per violation</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#privacy</span><span class="tag">#children</span><span class="tag">#parental_consent</span><span class="tag">#data</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="kids online safety act (kosa)"
+    data-country="united states"
+    data-region="Americas"
+    data-status="Active"
+    data-summary="signed into law july 2024. requires platforms to implement default privacy settings for minors and provide parental controls. platforms must minimize data collection and addictive design."
+    data-tags="social media children privacy safety"
+    data-updated="2026-06-29"
+    data-effective="2024-07-30"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.congress.gov/bill/118th-congress/senate-bill/1409" target="_blank" rel="noopener">Kids Online Safety Act (KOSA)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 United States</span>
+      <span class="meta-item">📍 Americas</span>
+      
+      <span class="meta-item">📅 2024-07-30</span>
+      
+      
+      <span class="meta-item">🏛️ FTC</span>
+      
+    </div>
+
+    <p class="card-summary">Signed into law July 2024. Requires platforms to implement default privacy settings for minors and provide parental controls. Platforms must minimize data collection and addictive design.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to $50,000 per violation per day</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#social_media</span><span class="tag">#children</span><span class="tag">#privacy</span><span class="tag">#safety</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="online safety amendment (social media minimum age) act 2024"
+    data-country="australia"
+    data-region="Asia-Pacific"
+    data-status="Active"
+    data-summary="bans children under 16 from using social media platforms. platforms must take reasonable steps to verify ages. fines for systematic non-compliance."
+    data-tags="social media under 16 ban children"
+    data-updated="2026-06-29"
+    data-effective="2025-07-01"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.legislation.gov.au/" target="_blank" rel="noopener">Online Safety Amendment (Social Media Minimum Age) Act 2024</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Australia</span>
+      <span class="meta-item">📍 Asia-Pacific</span>
+      
+      <span class="meta-item">📅 2025-07-01</span>
+      
+      
+      <span class="meta-item">🏛️ ACMA (Australian Communications and Media Authority)</span>
+      
+    </div>
+
+    <p class="card-summary">Bans children under 16 from using social media platforms. Platforms must take reasonable steps to verify ages. Fines for systematic non-compliance.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to AUD $49.5 million for systemic breaches</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#social_media</span><span class="tag">#under_16</span><span class="tag">#ban</span><span class="tag">#children</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="french age verification decree (pornography)"
+    data-country="france"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="requires pornographic websites to implement robust age verification for french users. arcom (formerly csa) can order isps to block non-compliant sites."
+    data-tags="pornography blocking children"
+    data-updated="2026-06-29"
+    data-effective="2023-10-01"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.arcom.fr/" target="_blank" rel="noopener">French Age Verification Decree (Pornography)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 France</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2023-10-01</span>
+      
+      
+      <span class="meta-item">🏛️ Arcom</span>
+      
+    </div>
+
+    <p class="card-summary">Requires pornographic websites to implement robust age verification for French users. Arcom (formerly CSA) can order ISPs to block non-compliant sites.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Site blocking by ISPs; criminal penalties</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#pornography</span><span class="tag">#blocking</span><span class="tag">#children</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="youth protection act (juschg) 2021 reform"
+    data-country="germany"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="expanded german youth protection to online platforms. requires age classification and appropriate access controls for harmful content online."
+    data-tags="youth protection platforms classification"
+    data-updated="2026-06-29"
+    data-effective="2021-05-01"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.bmj.de/" target="_blank" rel="noopener">Youth Protection Act (JuSchG) 2021 Reform</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Germany</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2021-05-01</span>
+      
+      
+      <span class="meta-item">🏛️ KJM (Commission for Youth Media Protection)</span>
+      
+    </div>
+
+    <p class="card-summary">Expanded German youth protection to online platforms. Requires age classification and appropriate access controls for harmful content online.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to €50 million</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#youth_protection</span><span class="tag">#platforms</span><span class="tag">#classification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="online harms act (bill c-63)"
+    data-country="canada"
+    data-region="Americas"
+    data-status="Proposed"
+    data-summary="proposed canadian legislation requiring age-appropriate design and verification for children. creates a digital safety commission. currently progressing through parliament."
+    data-tags="online harms children proposed social media"
+    data-updated="2026-06-29"
+    data-effective="TBD"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.canada.ca/en/department-justice/news/2024/02/government-of-canada-introduces-online-harms-act.html" target="_blank" rel="noopener">Online Harms Act (Bill C-63)</a>
+      </div>
+      <span class="status-badge status-Proposed">Proposed</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Canada</span>
+      <span class="meta-item">📍 Americas</span>
+      
+      
+      <span class="meta-item">🏛️ Digital Safety Commission (proposed)</span>
+      
+    </div>
+
+    <p class="card-summary">Proposed Canadian legislation requiring age-appropriate design and verification for children. Creates a Digital Safety Commission. Currently progressing through Parliament.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to CAD $10 million or 3% of global revenue</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#online_harms</span><span class="tag">#children</span><span class="tag">#proposed</span><span class="tag">#social_media</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="code of practice for online safety (singapore)"
+    data-country="singapore"
+    data-region="Asia-Pacific"
+    data-status="Active"
+    data-summary="requires major social media services operating in singapore to implement safety measures including age verification and child safety tools."
+    data-tags="social media children safety"
+    data-updated="2026-06-29"
+    data-effective="2023-07-18"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://www.imda.gov.sg/" target="_blank" rel="noopener">Code of Practice for Online Safety (Singapore)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Singapore</span>
+      <span class="meta-item">📍 Asia-Pacific</span>
+      
+      <span class="meta-item">📅 2023-07-18</span>
+      
+      
+      <span class="meta-item">🏛️ IMDA (Infocomm Media Development Authority)</span>
+      
+    </div>
+
+    <p class="card-summary">Requires major social media services operating in Singapore to implement safety measures including age verification and child safety tools.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to SGD $1 million per breach</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#social_media</span><span class="tag">#children</span><span class="tag">#safety</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="age appropriate design code (children's code)"
+    data-country="united kingdom"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="ico code requiring services likely to be accessed by children to apply default privacy settings and restrict data profiling. enforced via uk gdpr."
+    data-tags="privacy children design data"
+    data-updated="2026-06-29"
+    data-effective="2021-09-02"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://ico.org.uk/for-organisations/childrens-code-hub/" target="_blank" rel="noopener">Age Appropriate Design Code (Children's Code)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 United Kingdom</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2021-09-02</span>
+      
+      
+      <span class="meta-item">🏛️ ICO (Information Commissioner's Office)</span>
+      
+    </div>
+
+    <p class="card-summary">ICO code requiring services likely to be accessed by children to apply default privacy settings and restrict data profiling. Enforced via UK GDPR.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to £17.5 million or 4% of global turnover under UK GDPR</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#privacy</span><span class="tag">#children</span><span class="tag">#design</span><span class="tag">#data</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="louisiana hb 142 (age verification for pornography)"
+    data-country="united states"
+    data-region="Americas"
+    data-status="Active"
+    data-summary="first us state law requiring websites publishing pornographic content to verify users are over 18. basis for similar laws in other us states."
+    data-tags="pornography state law usa 18+"
+    data-updated="2026-06-29"
+    data-effective="2023-01-01"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://legis.la.gov/" target="_blank" rel="noopener">Louisiana HB 142 (Age Verification for Pornography)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 United States</span>
+      <span class="meta-item">📍 Americas</span>
+      
+      <span class="meta-item">📅 2023-01-01</span>
+      
+      
+      <span class="meta-item">🏛️ Louisiana Attorney General</span>
+      
+    </div>
+
+    <p class="card-summary">First US state law requiring websites publishing pornographic content to verify users are over 18. Basis for similar laws in other US states.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Civil liability; nominal damages</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#pornography</span><span class="tag">#state_law</span><span class="tag">#USA</span><span class="tag">#18+</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="gdpr article 8 (children's consent)"
+    data-country="european union"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="sets the age of digital consent at 16 (or 13–15 depending on member state). services must verify age and obtain parental consent for children below the threshold."
+    data-tags="gdpr privacy consent children"
+    data-updated="2026-06-29"
+    data-effective="2018-05-25"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://gdpr.eu/article-8-conditions-applicable-to-childs-consent/" target="_blank" rel="noopener">GDPR Article 8 (Children's Consent)</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 European Union</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2018-05-25</span>
+      
+      
+      <span class="meta-item">🏛️ National Data Protection Authorities</span>
+      
+    </div>
+
+    <p class="card-summary">Sets the age of digital consent at 16 (or 13–15 depending on member state). Services must verify age and obtain parental consent for children below the threshold.</p>
+
+    
+    <div class="card-fines">⚠️ <strong>Fines:</strong> Up to €20 million or 4% of global annual turnover</div>
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#GDPR</span><span class="tag">#privacy</span><span class="tag">#consent</span><span class="tag">#children</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="did the eu parliament really vote not to protect children online?"
+    data-country="europe"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="in april 2026, negotiations on the ‘interim eprivacy derogation’ fell apart, with several stakeholders claiming that the european parliament stopped the eu from protecting children. in reality, however, the parliament’s position aimed to ensure the protection of all fundamental rights without leading to mass surveillance – whereas eu member states and the commission proved unwilling to move even an inch on safeguards. the post did the eu parliament really vote not to protect children online? app"
+    data-tags="children online"
+    data-updated="2026-06-29"
+    data-effective="2026-05-11"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://edri.org/our-work/did-the-eu-parliament-really-vote-not-to-protect-children-online/" target="_blank" rel="noopener">Did the EU Parliament really vote not to protect children online?</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Europe</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2026-05-11</span>
+      
+      
+      <span class="meta-item">🏛️ EDRi</span>
+      
+    </div>
+
+    <p class="card-summary">In April 2026, negotiations on the ‘interim ePrivacy derogation’ fell apart, with several stakeholders claiming that the European Parliament stopped the EU from protecting children. In reality, however, the Parliament’s position aimed to ensure the protection of all fundamental rights without leading to mass surveillance – whereas EU Member States and the Commission proved unwilling to move even an inch on safeguards. The post Did the EU Parliament really vote not to protect children online? app</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#children_online</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="announcing the summit “fight for us, not for them”: a public interest vision for eu tech policy"
+    data-country="europe"
+    data-region="Europe"
+    data-status="Active"
+    data-summary="europe’s approach to governance for advancing technology in the digital age is under pressure, with “simplification” proposals hitting the heart of core digital protections. at the same time, civil society is uniquely positioned to co-develop the eu’s vision for public-interest tech laws, policies and practices. today, civil society organisations announce a strategic convening between european lawmakers, regulators, journalists and key civil society voices for a vision for tech laws and practice"
+    data-tags="digital age"
+    data-updated="2026-06-29"
+    data-effective="2026-04-30"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://edri.org/our-work/announcing-the-summit-fight-for-us-not-for-them-a-public-interest-vision-for-eu-tech-policy/" target="_blank" rel="noopener">Announcing the Summit “Fight for Us, not for Them”: A public interest vision for EU tech policy</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Europe</span>
+      <span class="meta-item">📍 Europe</span>
+      
+      <span class="meta-item">📅 2026-04-30</span>
+      
+      
+      <span class="meta-item">🏛️ EDRi</span>
+      
+    </div>
+
+    <p class="card-summary">Europe’s approach to governance for advancing technology in the digital age is under pressure, with “simplification” proposals hitting the heart of core digital protections. At the same time, civil society is uniquely positioned to co-develop the EU’s vision for public-interest tech laws, policies and practices. Today, civil society organisations announce a strategic convening between European lawmakers, regulators, journalists and key civil society voices for a vision for tech laws and practice</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#digital_age</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="some kids are bypassing age-verification checks with a fake mustache"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="a new survey found that kids find it easy to bypass age checks, despite a rise in age-verification laws around the world."
+    data-tags="age check"
+    data-updated="2026-06-29"
+    data-effective="2026-05-06"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2026/05/06/some-kids-are-bypassing-age-verification-checks-with-a-fake-mustache/" target="_blank" rel="noopener">Some kids are bypassing age-verification checks with a fake mustache</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2026-05-06</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">A new survey found that kids find it easy to bypass age checks, despite a rise in age-verification laws around the world.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_check</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="discord delays global rollout of age verification after backlash"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="the company added that 90% of users won’t need to verify their age and will be able to keep using discord as usual."
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2026-02-24"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2026/02/24/discord-delays-global-rollout-of-age-verification-after-backlash/" target="_blank" rel="noopener">Discord delays global rollout of age verification after backlash</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2026-02-24</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">The company added that 90% of users won’t need to verify their age and will be able to keep using Discord as usual.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="discord to roll out age verification next month"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="all users will be put into a "teen-appropriate experience" by default unless they prove that they are adults."
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2026-02-09"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2026/02/09/discord-to-roll-out-age-verification-next-month-for-full-access-to-its-platform/" target="_blank" rel="noopener">Discord to roll out age verification next month</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2026-02-09</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">All users will be put into a "teen-appropriate experience" by default unless they prove that they are adults.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="here’s how roblox’s age checks work"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="the company says it has continuous age-check systems running in the background to ensure age accuracy."
+    data-tags="age check"
+    data-updated="2026-06-29"
+    data-effective="2026-02-06"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2026/02/06/heres-how-robloxs-age-checks-work/" target="_blank" rel="noopener">Here’s how Roblox’s age checks work</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2026-02-06</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">The company says it has continuous age-check systems running in the background to ensure age accuracy.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_check</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="roblox now requires all users globally to complete age checks to access chat"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="once users complete an age check, they can access age-based chat, which means they can only communicate with others in a similar age group."
+    data-tags="age check"
+    data-updated="2026-06-29"
+    data-effective="2026-01-07"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2026/01/07/roblox-now-requires-all-users-globally-to-complete-age-checks-to-access-chat/" target="_blank" rel="noopener">Roblox now requires all users globally to complete age checks to access chat</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2026-01-07</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">Once users complete an age check, they can access age-based chat, which means they can only communicate with others in a similar age group.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_check</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="bluesky rolls out age verification for users in ohio"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="users in ohio will have to verify their age to use bluesky's social network as of monday."
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2025-09-29"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2025/09/29/bluesky-rolls-out-age-verification-for-users-in-ohio/" target="_blank" rel="noopener">Bluesky rolls out age verification for users in Ohio</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2025-09-29</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">Users in Ohio will have to verify their age to use Bluesky's social network as of Monday.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="trusources to show off its on-device identity-checking tech at techcrunch disrupt 2025"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="age-verification laws are a privacy and security nightmare. this startup performs age checks on-device, without users having to upload their ids to the internet."
+    data-tags="age check"
+    data-updated="2026-06-29"
+    data-effective="2025-09-26"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2025/09/26/trusources-to-show-off-its-on-device-identity-checking-tech-at-techcrunch-disrupt-2025/" target="_blank" rel="noopener">TruSources to show off its on-device identity-checking tech at TechCrunch Disrupt 2025</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2025-09-26</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">Age-verification laws are a privacy and security nightmare. This startup performs age checks on-device, without users having to upload their IDs to the internet.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_check</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="scotus porn ruling opens door to sweeping internet age verification"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="age verification in this context does not mean mindlessly clicking a box to declare that you are an adult — it means uploading government id documents or using third-party verification platforms to prove your age."
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2025-06-27"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2025/06/27/scotus-porn-ruling-opens-door-to-sweeping-internet-age-verification/" target="_blank" rel="noopener">SCOTUS porn ruling opens door to sweeping internet age verification</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2025-06-27</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">Age verification in this context does not mean mindlessly clicking a box to declare that you are an adult — it means uploading government ID documents or using third-party verification platforms to prove your age.</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="pornhub disables access in texas due to age verification law"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="texas residents can no longer access pornhub — without a vpn. as of thursday, when people in texas try to access any of the porn sites owned by aylo, formerly mindgeek, they’ll instead see a long message in opposition to age verification laws. laws requiring age verification on adult entertainment sites have already gone into […]"
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2024-03-14"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2024/03/14/pornhub-disables-access-in-texas-due-to-age-verification-law/" target="_blank" rel="noopener">Pornhub disables access in Texas due to age verification law</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2024-03-14</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">Texas residents can no longer access Pornhub — without a VPN. As of Thursday, when people in Texas try to access any of the porn sites owned by Aylo, formerly MindGeek, they’ll instead see a long message in opposition to age verification laws. Laws requiring age verification on adult entertainment sites have already gone into […]</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="texas cannot yet enforce id checks on porn sites"
+    data-country="global"
+    data-region="Global"
+    data-status="Proposed"
+    data-summary="a texas judge issued an injunction today to stall the enforcement of an online age verification bill. the free speech coalition, along with adult video sites like pornhub, led the legal challenge against texas’ hb 1181, arguing that the bill violates the first amendment and infringes on rights guaranteed by section 230. “the court agrees […]"
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2023-08-31"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2023/08/31/texas-cannot-yet-enforce-id-checks-on-porn-sites/" target="_blank" rel="noopener">Texas cannot yet enforce ID checks on porn sites</a>
+      </div>
+      <span class="status-badge status-Proposed">Proposed</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2023-08-31</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">A Texas judge issued an injunction today to stall the enforcement of an online age verification bill. The Free Speech Coalition, along with adult video sites like Pornhub, led the legal challenge against Texas’ HB 1181, arguing that the bill violates the First Amendment and infringes on rights guaranteed by Section 230. “The Court agrees […]</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="card"
+    data-title="pornhub blocks access in mississippi, virginia and utah amid changing laws"
+    data-country="global"
+    data-region="Global"
+    data-status="Active"
+    data-summary="pornhub is blocking access from users in mississippi, virginia and utah, which have recently passed laws that require age verification to access adult websites. similar legislation went into effect in louisiana at the start of the year. to comply, pornhub required visitors to verify their age with the la wallet app, a digital wallet for […]"
+    data-tags="age verification"
+    data-updated="2026-06-29"
+    data-effective="2023-07-03"
+  >
+    <div class="card-header">
+      <div class="card-title">
+        <a href="https://techcrunch.com/2023/07/03/pornhub-blocks-access-in-mississippi-virginia-and-utah-amid-changing-laws/" target="_blank" rel="noopener">Pornhub blocks access in Mississippi, Virginia and Utah amid changing laws</a>
+      </div>
+      <span class="status-badge status-Active">Active</span>
+    </div>
+
+    <div class="card-meta">
+      <span class="meta-item">🌍 Global</span>
+      <span class="meta-item">📍 Global</span>
+      
+      <span class="meta-item">📅 2023-07-03</span>
+      
+      
+      <span class="meta-item">🏛️ TechCrunch</span>
+      
+    </div>
+
+    <p class="card-summary">Pornhub is blocking access from users in Mississippi, Virginia and Utah, which have recently passed laws that require age verification to access adult websites. Similar legislation went into effect in Louisiana at the start of the year. To comply, Pornhub required visitors to verify their age with the LA Wallet app, a digital wallet for […]</p>
+
+    
+
+    
+    <div class="tag-list">
+      <span class="tag">#age_verification</span>
+    </div>
+    
+
+    <div class="card-footer">🔄 Updated 2026-06-29</div>
+  </div>
+  
+  <div class="no-results" id="noResults" style="display:none;">No laws match your search. Try different keywords.</div>
+</div>
+
+<footer>
+  <p>Data sourced from official government publications, regulatory bodies & authoritative news feeds.</p>
+  <p>🤖 Fully automated — no human input required &nbsp;|&nbsp; <a href="https://github.com/welshman/age-verification-tracker" target="_blank">View source on GitHub</a></p>
+</footer>
+
+<script>
+function filterCards() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const region = document.getElementById('regionFilter').value;
+  const status = document.getElementById('statusFilter').value;
+  const sort   = document.getElementById('sortFilter').value;
+
+  const grid = document.getElementById('grid');
+  const cards = Array.from(grid.querySelectorAll('.card'));
+
+  let visible = cards.filter(card => {
+    const matchSearch = !search ||
+      card.dataset.title.includes(search) ||
+      card.dataset.country.includes(search) ||
+      card.dataset.summary.includes(search) ||
+      card.dataset.tags.includes(search);
+    const matchRegion = !region || card.dataset.region === region;
+    const matchStatus = !status || card.dataset.status === status;
+    return matchSearch && matchRegion && matchStatus;
+  });
+
+  // Sort
+  visible.sort((a, b) => {
+    if (sort === 'title')     return a.dataset.title.localeCompare(b.dataset.title);
+    if (sort === 'effective') return (b.dataset.effective || '').localeCompare(a.dataset.effective || '');
+    return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
+  });
+
+  // Re-render
+  cards.forEach(c => c.style.display = 'none');
+  visible.forEach(c => c.style.display = '');
+  document.getElementById('noResults').style.display = visible.length ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
