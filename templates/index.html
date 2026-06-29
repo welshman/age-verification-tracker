@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🌍 Global Age Verification Law Tracker</title>
   <meta name="description" content="Track every age verification law, regulation, fine, and update from around the world — always current, updated daily." />
+  <!-- Leaflet for world map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     :root {
       --bg: #0d1117;
@@ -19,16 +22,29 @@
       --red: #f85149;
       --purple: #bc8cff;
       --orange: #ffa657;
+      --teal: #39d353;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; }
 
-    /* ── Header ── */
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; gap: 0; overflow-x: auto;
+    }
+    nav a {
+      padding: 0.75rem 1.4rem; color: var(--muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500; white-space: nowrap;
+      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--text); border-bottom-color: var(--accent); }
+
+    /* Header */
     header {
       background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%);
       border-bottom: 1px solid var(--border);
-      padding: 2rem 1.5rem 1.5rem;
-      text-align: center;
+      padding: 2rem 1.5rem 1.5rem; text-align: center;
     }
     header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; margin-bottom: 0.4rem; }
     header p.subtitle { color: var(--muted); font-size: 1rem; }
@@ -40,13 +56,12 @@
     }
     .badge span { color: var(--green); font-weight: 600; }
 
-    /* ── Stats bar ── */
+    /* Stats bar */
     .stats-bar {
       display: flex; flex-wrap: wrap; gap: 1rem;
       justify-content: center;
       padding: 1.2rem 1.5rem;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      background: var(--surface); border-bottom: 1px solid var(--border);
     }
     .stat-card {
       text-align: center; padding: 0.6rem 1.4rem;
@@ -56,69 +71,136 @@
     .stat-card .num { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
     .stat-card .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 
-    /* ── Controls ── */
+    /* Section wrapper */
+    .section { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .section-title {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;
+    }
+
+    /* ── World Map ── */
+    #map-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    #world-map { height: 520px; width: 100%; border-radius: 8px; overflow: hidden; }
+    .map-legend {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-top: 0.75rem; font-size: 0.82rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+    .legend-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    /* ── Country Grid ── */
+    .country-region-block { margin-bottom: 2rem; }
+    .region-label {
+      font-size: 1rem; font-weight: 700; color: var(--accent);
+      margin-bottom: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .country-grid {
+      display: flex; flex-wrap: wrap; gap: 0.55rem;
+    }
+    .country-tile {
+      min-width: 130px; padding: 0.6rem 0.75rem;
+      border-radius: 7px; border: 1px solid var(--border);
+      background: var(--surface2);
+      cursor: pointer; transition: transform 0.15s, border-color 0.2s;
+      position: relative;
+    }
+    .country-tile:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .tile-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .tile-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .tile-badge {
+      font-size: 0.65rem; padding: 0.1rem 0.4rem;
+      border-radius: 3px; font-weight: 600;
+    }
+    /* Tile border colours by dominant status */
+    .tile-active    { border-left: 3px solid var(--green); }
+    .tile-proposed  { border-left: 3px solid var(--yellow); }
+    .tile-suspended { border-left: 3px solid var(--red); }
+    .tile-none      { border-left: 3px solid var(--border); opacity: 0.55; }
+    /* Badge colours */
+    .badge-adult    { background: #3a1a0a; color: #ffa657; border: 1px solid #7a3a1a; }
+    .badge-social   { background: #0a2a1a; color: #3fb950; border: 1px solid #1a5a2a; }
+    .badge-privacy  { background: #1a1a3a; color: #bc8cff; border: 1px solid #3a3a7a; }
+    .badge-pending  { background: #2d2a10; color: #d29922; border: 1px solid #6a5a10; }
+    .badge-general  { background: #1a2a3a; color: #58a6ff; border: 1px solid #2a4a6a; }
+    .tile-count { font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); z-index: 9999;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; max-width: 700px; width: 100%;
+      max-height: 85vh; overflow-y: auto; padding: 1.5rem;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .modal-header h2 { font-size: 1.2rem; }
+    .modal-close { background: none; border: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; padding: 0.2rem 0.5rem; }
+    .modal-close:hover { color: var(--text); }
+    .modal-law {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;
+    }
+    .modal-law h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .modal-law h3 a { color: var(--accent); text-decoration: none; }
+    .modal-law p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .modal-fines { font-size: 0.82rem; color: var(--orange); background: #2d2010; padding: 0.3rem 0.6rem; border-radius: 4px; display: inline-block; margin-top: 0.3rem; }
+
+    /* Controls */
     .controls {
-      max-width: 1400px; margin: 1.5rem auto; padding: 0 1.5rem;
+      max-width: 1400px; margin: 1.5rem auto 0; padding: 0 1.5rem;
       display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
     }
     .controls input[type=text] {
-      flex: 1 1 260px;
-      padding: 0.55rem 1rem;
+      flex: 1 1 260px; padding: 0.55rem 1rem;
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 6px; color: var(--text); font-size: 0.95rem;
     }
     .controls select {
       padding: 0.55rem 1rem;
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 6px; color: var(--text); font-size: 0.9rem;
-      cursor: pointer;
+      border-radius: 6px; color: var(--text); font-size: 0.9rem; cursor: pointer;
     }
-    .controls input:focus, .controls select:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+    .controls input:focus, .controls select:focus { outline: 2px solid var(--accent); }
 
-    /* ── Grid ── */
+    /* Law cards grid */
     .grid {
-      max-width: 1400px; margin: 0 auto; padding: 0 1.5rem 3rem;
+      max-width: 1400px; margin: 1rem auto; padding: 0 1.5rem 3rem;
       display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1rem;
     }
-
-    /* ── Cards ── */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.25rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
       transition: border-color 0.2s, transform 0.15s;
       display: flex; flex-direction: column; gap: 0.6rem;
     }
     .card:hover { border-color: var(--accent); transform: translateY(-2px); }
     .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
-    .card-title { font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; }
+    .card-title { font-size: 1rem; font-weight: 600; flex: 1; }
     .card-title a { color: inherit; text-decoration: none; }
     .card-title a:hover { color: var(--accent); }
-
     .status-badge {
       font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
       border-radius: 20px; white-space: nowrap; text-transform: uppercase;
     }
-    .status-Active    { background: #1a3a1a; color: var(--green); border: 1px solid #2d5a2d; }
+    .status-Active    { background: #1a3a1a; color: var(--green);  border: 1px solid #2d5a2d; }
     .status-Proposed  { background: #2d2a1a; color: var(--yellow); border: 1px solid #5a4a1a; }
-    .status-Suspended { background: #3a1a1a; color: var(--red); border: 1px solid #5a2a2a; }
+    .status-Suspended { background: #3a1a1a; color: var(--red);    border: 1px solid #5a2a2a; }
     .status-Updated   { background: #1a1a3a; color: var(--purple); border: 1px solid #2a2a5a; }
-
-    .card-meta {
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
-      font-size: 0.8rem; color: var(--muted);
-    }
-    .meta-item { display: flex; align-items: center; gap: 0.25rem; }
+    .card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: 0.8rem; color: var(--muted); }
     .card-summary { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
     .card-fines {
-      font-size: 0.82rem;
-      background: #2d2010; border: 1px solid #5a3a10;
-      border-radius: 5px; padding: 0.4rem 0.7rem;
-      color: var(--orange);
+      font-size: 0.82rem; background: #2d2010; border: 1px solid #5a3a10;
+      border-radius: 5px; padding: 0.4rem 0.7rem; color: var(--orange);
     }
-    .card-fines strong { color: var(--orange); }
-
     .tag-list { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
     .tag {
       font-size: 0.7rem; padding: 0.15rem 0.5rem;
@@ -126,24 +208,27 @@
       border-radius: 3px; color: var(--muted);
     }
     .card-footer { margin-top: auto; padding-top: 0.4rem; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--border); }
-
-    /* ── No results ── */
     .no-results { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted); font-size: 1.1rem; }
 
-    /* ── Footer ── */
     footer {
       text-align: center; padding: 1.5rem;
       border-top: 1px solid var(--border);
       font-size: 0.82rem; color: var(--muted);
     }
     footer a { color: var(--accent); text-decoration: none; }
-
     @media (max-width: 600px) {
       .grid { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+      .country-tile { min-width: 110px; }
     }
   </style>
 </head>
 <body>
+
+<nav id="topnav">
+  <a href="#map-section" class="active">🗺️ World Map</a>
+  <a href="#country-section">🌐 Country View</a>
+  <a href="#laws-section">📋 All Laws</a>
+</nav>
 
 <header>
   <h1>🌍 Global Age Verification Law Tracker</h1>
@@ -170,105 +255,295 @@
   {% endfor %}
 </div>
 
-<div class="controls">
-  <input type="text" id="searchInput" placeholder="🔍  Search laws, countries, keywords..." oninput="filterCards()" />
-  <select id="regionFilter" onchange="filterCards()">
-    <option value="">All Regions</option>
-    {% for region in regions %}<option value="{{ region }}">{{ region }}</option>{% endfor %}
-  </select>
-  <select id="statusFilter" onchange="filterCards()">
-    <option value="">All Statuses</option>
-    {% for status in statuses %}<option value="{{ status }}">{{ status }}</option>{% endfor %}
-  </select>
-  <select id="sortFilter" onchange="filterCards()">
-    <option value="updated">Sort: Latest Updated</option>
-    <option value="title">Sort: Title A–Z</option>
-    <option value="effective">Sort: Effective Date</option>
-  </select>
+<!-- ══════════════ WORLD MAP ══════════════ -->
+<div id="map-section">
+  <div class="section">
+    <div class="section-title">🗺️ Interactive World Map</div>
+    <div id="world-map"></div>
+    <div class="map-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div> Active law</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d29922"></div> Proposed / Pending</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f85149"></div> Suspended / Challenged</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div> Updated / Amended</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#444c56"></div> No tracked law</div>
+    </div>
+  </div>
 </div>
 
-<div class="grid" id="grid">
-  {% for law in laws %}
-  <div class="card"
-    data-title="{{ law.title | lower }}"
-    data-country="{{ law.country | lower }}"
-    data-region="{{ law.region }}"
-    data-status="{{ law.status }}"
-    data-summary="{{ law.summary | lower }}"
-    data-tags="{{ law.tags | join(' ') | lower }}"
-    data-updated="{{ law.last_updated }}"
-    data-effective="{{ law.effective_date }}"
-  >
-    <div class="card-header">
-      <div class="card-title">
-        {% if law.url %}<a href="{{ law.url }}" target="_blank" rel="noopener">{{ law.title }}</a>{% else %}{{ law.title }}{% endif %}
+<!-- ══════════════ COUNTRY GRID ══════════════ -->
+<div id="country-section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section">
+    <div class="section-title">🌐 Country by Country View</div>
+    {% for region in regions %}
+    <div class="country-region-block">
+      <div class="region-label">
+        {% if region == 'Europe' %}🇪🇺
+        {% elif region == 'Americas' %}🌎
+        {% elif region == 'Asia-Pacific' %}🌏
+        {% elif region == 'Middle East' %}🕌
+        {% elif region == 'Africa' %}🌍
+        {% else %}🌐{% endif %}
+        {{ region }}
       </div>
-      <span class="status-badge status-{{ law.status }}">{{ law.status }}</span>
+      <div class="country-grid">
+        {% for country, country_laws in countries_by_region[region].items() | sort %}
+        {% set dominant = country_laws | map(attribute='status') | list %}
+        {% set tile_class = 'tile-active' if 'Active' in dominant else ('tile-proposed' if 'Proposed' in dominant else ('tile-suspended' if 'Suspended' in dominant else 'tile-none')) %}
+        <div class="country-tile {{ tile_class }}" onclick="openModal('{{ country | replace("'", "&#39;") }}')">
+          <div class="tile-name">{{ country }}</div>
+          <div class="tile-tags">
+            {% set tag_types = [] %}
+            {% for law in country_laws %}
+              {% set t = law.tags | join(' ') | lower %}
+              {% if 'pornography' in t or 'adult' in t %}{% if 'adult' not in tag_types %}{% set _ = tag_types.append('adult') %}{% endif %}{% endif %}
+              {% if 'social media' in t or 'social' in t %}{% if 'social' not in tag_types %}{% set _ = tag_types.append('social') %}{% endif %}{% endif %}
+              {% if 'privacy' in t or 'gdpr' in t or 'coppa' in t %}{% if 'privacy' not in tag_types %}{% set _ = tag_types.append('privacy') %}{% endif %}{% endif %}
+              {% if 'proposed' in law.status | lower or 'pending' in law.status | lower %}{% if 'pending' not in tag_types %}{% set _ = tag_types.append('pending') %}{% endif %}{% endif %}
+            {% endfor %}
+            {% if tag_types %}
+              {% for tt in tag_types[:3] %}
+              <span class="tile-badge badge-{{ tt }}">{{ tt | title }}</span>
+              {% endfor %}
+            {% else %}
+              <span class="tile-badge badge-general">Law ✓</span>
+            {% endif %}
+          </div>
+          <div class="tile-count">{{ country_laws | length }} law{% if country_laws | length != 1 %}s{% endif %}</div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
-
-    <div class="card-meta">
-      <span class="meta-item">🌍 {{ law.country }}</span>
-      <span class="meta-item">📍 {{ law.region }}</span>
-      {% if law.effective_date and law.effective_date != 'TBD' %}
-      <span class="meta-item">📅 {{ law.effective_date }}</span>
-      {% endif %}
-      {% if law.authority %}
-      <span class="meta-item">🏛️ {{ law.authority }}</span>
-      {% endif %}
-    </div>
-
-    <p class="card-summary">{{ law.summary }}</p>
-
-    {% if law.fines and law.fines != 'See source for details' %}
-    <div class="card-fines">⚠️ <strong>Fines:</strong> {{ law.fines }}</div>
-    {% endif %}
-
-    {% if law.tags %}
-    <div class="tag-list">
-      {% for tag in law.tags %}<span class="tag">#{{ tag | replace(' ', '_') }}</span>{% endfor %}
-    </div>
-    {% endif %}
-
-    <div class="card-footer">🔄 Updated {{ law.last_updated }}</div>
+    {% endfor %}
   </div>
-  {% endfor %}
-  <div class="no-results" id="noResults" style="display:none;">No laws match your search. Try different keywords.</div>
+</div>
+
+<!-- ══════════════ MODAL ══════════════ -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Laws</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ══════════════ LAW CARDS ══════════════ -->
+<div id="laws-section">
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="🔍  Search laws, countries, keywords..." oninput="filterCards()" />
+    <select id="regionFilter" onchange="filterCards()">
+      <option value="">All Regions</option>
+      {% for region in regions %}<option value="{{ region }}">{{ region }}</option>{% endfor %}
+    </select>
+    <select id="statusFilter" onchange="filterCards()">
+      <option value="">All Statuses</option>
+      {% for status in statuses %}<option value="{{ status }}">{{ status }}</option>{% endfor %}
+    </select>
+    <select id="sortFilter" onchange="filterCards()">
+      <option value="updated">Sort: Latest Updated</option>
+      <option value="title">Sort: Title A–Z</option>
+      <option value="effective">Sort: Effective Date</option>
+    </select>
+  </div>
+
+  <div class="grid" id="grid">
+    {% for law in laws %}
+    <div class="card"
+      data-title="{{ law.title | lower }}"
+      data-country="{{ law.country | lower }}"
+      data-region="{{ law.region }}"
+      data-status="{{ law.status }}"
+      data-summary="{{ law.summary | lower }}"
+      data-tags="{{ law.tags | join(' ') | lower }}"
+      data-updated="{{ law.last_updated }}"
+      data-effective="{{ law.effective_date }}"
+    >
+      <div class="card-header">
+        <div class="card-title">
+          {% if law.url %}<a href="{{ law.url }}" target="_blank" rel="noopener">{{ law.title }}</a>{% else %}{{ law.title }}{% endif %}
+        </div>
+        <span class="status-badge status-{{ law.status }}">{{ law.status }}</span>
+      </div>
+      <div class="card-meta">
+        <span>🌍 {{ law.country }}</span>
+        <span>📍 {{ law.region }}</span>
+        {% if law.effective_date and law.effective_date != 'TBD' %}<span>📅 {{ law.effective_date }}</span>{% endif %}
+        {% if law.authority %}<span>🏛️ {{ law.authority }}</span>{% endif %}
+      </div>
+      <p class="card-summary">{{ law.summary }}</p>
+      {% if law.fines and law.fines != 'See source for details' %}
+      <div class="card-fines">⚠️ <strong>Fines:</strong> {{ law.fines }}</div>
+      {% endif %}
+      {% if law.tags %}
+      <div class="tag-list">{% for tag in law.tags %}<span class="tag">#{{ tag | replace(' ', '_') }}</span>{% endfor %}</div>
+      {% endif %}
+      <div class="card-footer">🔄 Updated {{ law.last_updated }}</div>
+    </div>
+    {% endfor %}
+    <div class="no-results" id="noResults" style="display:none;">No laws match your search.</div>
+  </div>
 </div>
 
 <footer>
-  <p>Data sourced from official government publications, regulatory bodies & authoritative news feeds.</p>
+  <p>Data sourced from official government publications, regulatory bodies &amp; authoritative news feeds.</p>
   <p>🤖 Fully automated — no human input required &nbsp;|&nbsp; <a href="https://github.com/welshman/age-verification-tracker" target="_blank">View source on GitHub</a></p>
 </footer>
 
+<!-- ══════════════ DATA + SCRIPTS ══════════════ -->
 <script>
+// Inject law data for map + modal
+const LAW_DATA = {{ laws_json }};
+
+// ── Country → laws lookup ──
+const countryLaws = {};
+LAW_DATA.forEach(law => {
+  const c = law.country;
+  if (!countryLaws[c]) countryLaws[c] = [];
+  countryLaws[c].push(law);
+});
+
+// ── Modal ──
+function openModal(country) {
+  const laws = countryLaws[country] || [];
+  document.getElementById('modal-title').textContent = '🌍 ' + country + ' — ' + laws.length + ' law(s)';
+  const body = document.getElementById('modal-body');
+  body.innerHTML = laws.map(l => `
+    <div class="modal-law">
+      <h3>${l.url ? `<a href="${l.url}" target="_blank" rel="noopener">${l.title}</a>` : l.title}
+        &nbsp;<span class="status-badge status-${l.status}">${l.status}</span>
+      </h3>
+      <p>${l.summary || ''}</p>
+      ${l.fines && l.fines !== 'See source for details' ? `<div class="modal-fines">⚠️ Fines: ${l.fines}</div>` : ''}
+      <p style="margin-top:0.4rem;font-size:0.75rem;color:var(--muted)">Authority: ${l.authority || 'N/A'} &nbsp;|&nbsp; Effective: ${l.effective_date || 'N/A'}</p>
+    </div>
+  `).join('');
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── World Map ──
+const map = L.map('world-map', {
+  center: [20, 10], zoom: 2,
+  minZoom: 1, maxZoom: 6,
+  worldCopyJump: false,
+  zoomControl: true
+});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap © CARTO',
+  subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+// Country name → approximate lat/lng
+const COORDS = {
+  'United Kingdom': [55.4, -3.4],
+  'European Union': [50.9, 10.5],
+  'United States': [38.9, -97],
+  'Australia': [-25.3, 133.8],
+  'France': [46.2, 2.2],
+  'Germany': [51.2, 10.4],
+  'Canada': [56.1, -106.3],
+  'Singapore': [1.35, 103.8],
+  'India': [20.6, 78.9],
+  'Brazil': [-14.2, -51.9],
+  'Japan': [36.2, 138.3],
+  'South Korea': [35.9, 127.8],
+  'China': [35.9, 104.2],
+  'Russia': [61.5, 105.3],
+  'UAE': [23.4, 53.8],
+  'Saudi Arabia': [23.9, 45.1],
+  'South Africa': [-30.6, 22.9],
+  'Nigeria': [9.1, 8.7],
+  'Mexico': [23.6, -102.6],
+  'Spain': [40.5, -3.7],
+  'Italy': [41.9, 12.6],
+  'Netherlands': [52.1, 5.3],
+  'Sweden': [60.1, 18.6],
+  'Ireland': [53.1, -8.2],
+  'New Zealand': [-40.9, 174.9],
+  'Global': [20, 10],
+  'Europe': [54, 15]
+};
+
+const STATUS_COLORS = {
+  'Active': '#3fb950',
+  'Proposed': '#d29922',
+  'Suspended': '#f85149',
+  'Updated': '#bc8cff'
+};
+
+function dominantStatus(laws) {
+  if (laws.some(l => l.status === 'Active'))    return 'Active';
+  if (laws.some(l => l.status === 'Proposed'))  return 'Proposed';
+  if (laws.some(l => l.status === 'Suspended')) return 'Suspended';
+  return 'Updated';
+}
+
+Object.keys(countryLaws).forEach(country => {
+  const coords = COORDS[country];
+  if (!coords) return;
+  const laws = countryLaws[country];
+  const status = dominantStatus(laws);
+  const color = STATUS_COLORS[status] || '#58a6ff';
+
+  const marker = L.circleMarker(coords, {
+    radius: Math.min(8 + laws.length * 2, 20),
+    fillColor: color, color: '#fff',
+    weight: 1.5, opacity: 1, fillOpacity: 0.85
+  }).addTo(map);
+
+  const popupHtml = `
+    <div style="font-family:sans-serif;min-width:200px;">
+      <strong style="font-size:1rem">${country}</strong><br/>
+      <span style="color:${color};font-weight:600">${status}</span> &mdash; ${laws.length} law(s)<br/>
+      <hr style="border-color:#444;margin:0.4rem 0"/>
+      ${laws.slice(0,3).map(l => `<div style="font-size:0.82rem;margin-bottom:0.3rem">• ${l.title}</div>`).join('')}
+      ${laws.length > 3 ? `<div style="font-size:0.75rem;color:#aaa">+${laws.length-3} more</div>` : ''}
+      <button onclick="openModal('${country.replace(/'/g, "\\'")}')"
+        style="margin-top:0.5rem;padding:0.3rem 0.7rem;background:#21262d;border:1px solid #444;color:#e6edf3;border-radius:4px;cursor:pointer;font-size:0.8rem">
+        View all laws ↗
+      </button>
+    </div>
+  `;
+  marker.bindPopup(popupHtml, { maxWidth: 280 });
+  marker.on('click', () => marker.openPopup());
+});
+
+// ── Nav scroll highlight ──
+const sections = ['map-section','country-section','laws-section'];
+const navLinks = document.querySelectorAll('nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 100) current = id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+
+// ── Card filter ──
 function filterCards() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const region = document.getElementById('regionFilter').value;
   const status = document.getElementById('statusFilter').value;
   const sort   = document.getElementById('sortFilter').value;
-
-  const grid = document.getElementById('grid');
-  const cards = Array.from(grid.querySelectorAll('.card'));
-
-  let visible = cards.filter(card => {
-    const matchSearch = !search ||
-      card.dataset.title.includes(search) ||
-      card.dataset.country.includes(search) ||
-      card.dataset.summary.includes(search) ||
-      card.dataset.tags.includes(search);
-    const matchRegion = !region || card.dataset.region === region;
-    const matchStatus = !status || card.dataset.status === status;
-    return matchSearch && matchRegion && matchStatus;
+  const cards  = Array.from(document.querySelectorAll('#grid .card'));
+  let visible  = cards.filter(card => {
+    const ms = !search || card.dataset.title.includes(search) || card.dataset.country.includes(search) || card.dataset.summary.includes(search) || card.dataset.tags.includes(search);
+    const mr = !region || card.dataset.region === region;
+    const mst = !status || card.dataset.status === status;
+    return ms && mr && mst;
   });
-
-  // Sort
-  visible.sort((a, b) => {
-    if (sort === 'title')     return a.dataset.title.localeCompare(b.dataset.title);
-    if (sort === 'effective') return (b.dataset.effective || '').localeCompare(a.dataset.effective || '');
-    return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
+  visible.sort((a,b) => {
+    if (sort==='title')     return a.dataset.title.localeCompare(b.dataset.title);
+    if (sort==='effective') return (b.dataset.effective||'').localeCompare(a.dataset.effective||'');
+    return (b.dataset.updated||'').localeCompare(a.dataset.updated||'');
   });
-
-  // Re-render
   cards.forEach(c => c.style.display = 'none');
   visible.forEach(c => c.style.display = '');
   document.getElementById('noResults').style.display = visible.length ? 'none' : 'block';
