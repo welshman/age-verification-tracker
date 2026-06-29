@@ -93,19 +93,73 @@
     }
 
     /* ── Country Grid ── */
-    .country-region-block { margin-bottom: 2rem; }
+    .country-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.75rem;
+      border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem;
+    }
+    .country-section-header .section-title {
+      border-bottom: none; padding-bottom: 0; margin-bottom: 0;
+    }
+    .toggle-all-btn {
+      font-size: 0.8rem; padding: 0.35rem 0.9rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--muted); cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .toggle-all-btn:hover { color: var(--text); border-color: var(--accent); }
+
+    /* Collapsible region blocks */
+    .country-region-block { margin-bottom: 1rem; }
+    details.region-details {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    details.region-details[open] { border-color: var(--accent); }
+    summary.region-summary {
+      list-style: none;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    summary.region-summary::-webkit-details-marker { display: none; }
+    summary.region-summary:hover { background: rgba(88,166,255,0.06); }
+    .region-summary-left {
+      display: flex; align-items: center; gap: 0.5rem;
+    }
     .region-label {
       font-size: 1rem; font-weight: 700; color: var(--accent);
-      margin-bottom: 0.75rem; text-transform: uppercase;
-      letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      display: flex; align-items: center; gap: 0.4rem;
     }
+    .region-count-badge {
+      font-size: 0.7rem; padding: 0.1rem 0.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; color: var(--muted);
+    }
+    .region-chevron {
+      font-size: 0.8rem; color: var(--muted);
+      transition: transform 0.2s;
+    }
+    details.region-details[open] .region-chevron { transform: rotate(180deg); }
+    .region-body {
+      padding: 0.75rem 1rem 1rem;
+      border-top: 1px solid var(--border);
+      animation: fadeIn 0.18s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
     .country-grid {
       display: flex; flex-wrap: wrap; gap: 0.55rem;
     }
     .country-tile {
       min-width: 130px; padding: 0.6rem 0.75rem;
       border-radius: 7px; border: 1px solid var(--border);
-      background: var(--surface2);
+      background: var(--bg);
       cursor: pointer; transition: transform 0.15s, border-color 0.2s;
       position: relative;
     }
@@ -233,7 +287,7 @@
 <header>
   <h1>🌍 Global Age Verification Law Tracker</h1>
   <p class="subtitle">Every age verification law, regulation, fine &amp; update — worldwide</p>
-  <div class="badge">🤖 Fully automated &nbsp;|&nbsp; <span>Updated daily</span> &nbsp;|&nbsp; Last run: 29 June 2026, 22:13 UTC</div>
+  <div class="badge">🤖 Fully automated &nbsp;|&nbsp; <span>Updated daily</span> &nbsp;|&nbsp; Last run: 29 June 2026, 22:40 UTC</div>
 </header>
 
 <div class="stats-bar">
@@ -293,305 +347,348 @@
 <!-- ══════════════ COUNTRY GRID ══════════════ -->
 <div id="country-section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="section">
-    <div class="section-title">🌐 Country by Country View</div>
-    
-    <div class="country-region-block">
-      <div class="region-label">
-        🌎
-        
-        Americas
-      </div>
-      <div class="country-grid">
-        
-        
-        
-        <div class="country-tile tile-proposed" onclick="openModal('Canada')">
-          <div class="tile-name">Canada</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-            
-              
-              <span class="tile-badge badge-social">Social</span>
-              
-              <span class="tile-badge badge-pending">Pending</span>
-              
-            
-          </div>
-          <div class="tile-count">1 law</div>
-        </div>
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('United States')">
-          <div class="tile-name">United States</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-              
-              
-              
-              
-              
-            
-              
-              
-              
-              
-              
-            
-            
-              
-              <span class="tile-badge badge-privacy">Privacy</span>
-              
-              <span class="tile-badge badge-social">Social</span>
-              
-              <span class="tile-badge badge-adult">Adult</span>
-              
-            
-          </div>
-          <div class="tile-count">3 laws</div>
-        </div>
-        
-      </div>
+    <div class="country-section-header">
+      <div class="section-title">🌐 Country by Country View</div>
+      <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAllRegions()">⊟ Collapse All</button>
     </div>
     
     <div class="country-region-block">
-      <div class="region-label">
-        🌏
-        
-        Asia-Pacific
-      </div>
-      <div class="country-grid">
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('Australia')">
-          <div class="tile-name">Australia</div>
-          <div class="tile-tags">
+      <details class="region-details" open>
+        <summary class="region-summary">
+          <div class="region-summary-left">
+            <div class="region-label">
+              🌎
+              
+              Americas
+            </div>
+            <span class="region-count-badge">2 countries</span>
+          </div>
+          <span class="region-chevron">▼</span>
+        </summary>
+        <div class="region-body">
+          <div class="country-grid">
             
             
-              
-              
-              
-              
-              
+            
+            <div class="country-tile tile-proposed" onclick="openModal('Canada')">
+              <div class="tile-name">Canada</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-social">Social</span>
+                  
+                  <span class="tile-badge badge-pending">Pending</span>
+                  
+                
+              </div>
+              <div class="tile-count">1 law</div>
+            </div>
             
             
-              
-              <span class="tile-badge badge-social">Social</span>
-              
+            
+            <div class="country-tile tile-active" onclick="openModal('United States')">
+              <div class="tile-name">United States</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-privacy">Privacy</span>
+                  
+                  <span class="tile-badge badge-social">Social</span>
+                  
+                  <span class="tile-badge badge-adult">Adult</span>
+                  
+                
+              </div>
+              <div class="tile-count">3 laws</div>
+            </div>
             
           </div>
-          <div class="tile-count">1 law</div>
         </div>
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('Singapore')">
-          <div class="tile-name">Singapore</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-            
-              
-              <span class="tile-badge badge-social">Social</span>
-              
-            
-          </div>
-          <div class="tile-count">1 law</div>
-        </div>
-        
-      </div>
+      </details>
     </div>
     
     <div class="country-region-block">
-      <div class="region-label">
-        🇪🇺
-        
-        Europe
-      </div>
-      <div class="country-grid">
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('Europe')">
-          <div class="tile-name">Europe</div>
-          <div class="tile-tags">
+      <details class="region-details" open>
+        <summary class="region-summary">
+          <div class="region-summary-left">
+            <div class="region-label">
+              🌏
+              
+              Asia-Pacific
+            </div>
+            <span class="region-count-badge">2 countries</span>
+          </div>
+          <span class="region-chevron">▼</span>
+        </summary>
+        <div class="region-body">
+          <div class="country-grid">
             
             
-              
-              
-              
-              
-              
             
-              
-              
-              
-              
-              
+            <div class="country-tile tile-active" onclick="openModal('Australia')">
+              <div class="tile-name">Australia</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-social">Social</span>
+                  
+                
+              </div>
+              <div class="tile-count">1 law</div>
+            </div>
             
             
-              <span class="tile-badge badge-general">Law ✓</span>
+            
+            <div class="country-tile tile-active" onclick="openModal('Singapore')">
+              <div class="tile-name">Singapore</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-social">Social</span>
+                  
+                
+              </div>
+              <div class="tile-count">1 law</div>
+            </div>
             
           </div>
-          <div class="tile-count">2 laws</div>
         </div>
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('European Union')">
-          <div class="tile-name">European Union</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-              
-              
-              
-              
-              
-            
-            
-              
-              <span class="tile-badge badge-privacy">Privacy</span>
-              
-            
-          </div>
-          <div class="tile-count">2 laws</div>
-        </div>
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('France')">
-          <div class="tile-name">France</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-            
-              
-              <span class="tile-badge badge-adult">Adult</span>
-              
-            
-          </div>
-          <div class="tile-count">1 law</div>
-        </div>
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('Germany')">
-          <div class="tile-name">Germany</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-            
-              <span class="tile-badge badge-general">Law ✓</span>
-            
-          </div>
-          <div class="tile-count">1 law</div>
-        </div>
-        
-        
-        
-        <div class="country-tile tile-active" onclick="openModal('United Kingdom')">
-          <div class="tile-name">United Kingdom</div>
-          <div class="tile-tags">
-            
-            
-              
-              
-              
-              
-              
-            
-              
-              
-              
-              
-              
-            
-            
-              
-              <span class="tile-badge badge-adult">Adult</span>
-              
-              <span class="tile-badge badge-social">Social</span>
-              
-              <span class="tile-badge badge-privacy">Privacy</span>
-              
-            
-          </div>
-          <div class="tile-count">2 laws</div>
-        </div>
-        
-      </div>
+      </details>
     </div>
     
     <div class="country-region-block">
-      <div class="region-label">
-        🌐
-        Global
-      </div>
-      <div class="country-grid">
-        
-        
-        
-        <div class="country-tile tile-proposed" onclick="openModal('USA')">
-          <div class="tile-name">USA</div>
-          <div class="tile-tags">
+      <details class="region-details" open>
+        <summary class="region-summary">
+          <div class="region-summary-left">
+            <div class="region-label">
+              🇪🇺
+              
+              Europe
+            </div>
+            <span class="region-count-badge">5 countries</span>
+          </div>
+          <span class="region-chevron">▼</span>
+        </summary>
+        <div class="region-body">
+          <div class="country-grid">
             
             
-              
-              
-              
-              
-              
+            
+            <div class="country-tile tile-active" onclick="openModal('Europe')">
+              <div class="tile-name">Europe</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  <span class="tile-badge badge-general">Law ✓</span>
+                
+              </div>
+              <div class="tile-count">2 laws</div>
+            </div>
             
             
-              
-              <span class="tile-badge badge-pending">Pending</span>
-              
+            
+            <div class="country-tile tile-active" onclick="openModal('European Union')">
+              <div class="tile-name">European Union</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-privacy">Privacy</span>
+                  
+                
+              </div>
+              <div class="tile-count">2 laws</div>
+            </div>
+            
+            
+            
+            <div class="country-tile tile-active" onclick="openModal('France')">
+              <div class="tile-name">France</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-adult">Adult</span>
+                  
+                
+              </div>
+              <div class="tile-count">1 law</div>
+            </div>
+            
+            
+            
+            <div class="country-tile tile-active" onclick="openModal('Germany')">
+              <div class="tile-name">Germany</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  <span class="tile-badge badge-general">Law ✓</span>
+                
+              </div>
+              <div class="tile-count">1 law</div>
+            </div>
+            
+            
+            
+            <div class="country-tile tile-active" onclick="openModal('United Kingdom')">
+              <div class="tile-name">United Kingdom</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-adult">Adult</span>
+                  
+                  <span class="tile-badge badge-social">Social</span>
+                  
+                  <span class="tile-badge badge-privacy">Privacy</span>
+                  
+                
+              </div>
+              <div class="tile-count">2 laws</div>
+            </div>
             
           </div>
-          <div class="tile-count">1 law</div>
         </div>
-        
-      </div>
+      </details>
+    </div>
+    
+    <div class="country-region-block">
+      <details class="region-details" open>
+        <summary class="region-summary">
+          <div class="region-summary-left">
+            <div class="region-label">
+              🌐
+              Global
+            </div>
+            <span class="region-count-badge">1 countries</span>
+          </div>
+          <span class="region-chevron">▼</span>
+        </summary>
+        <div class="region-body">
+          <div class="country-grid">
+            
+            
+            
+            <div class="country-tile tile-proposed" onclick="openModal('USA')">
+              <div class="tile-name">USA</div>
+              <div class="tile-tags">
+                
+                
+                  
+                  
+                  
+                  
+                  
+                
+                
+                  
+                  <span class="tile-badge badge-pending">Pending</span>
+                  
+                
+              </div>
+              <div class="tile-count">1 law</div>
+            </div>
+            
+          </div>
+        </div>
+      </details>
     </div>
     
   </div>
@@ -1454,6 +1551,15 @@ LAW_DATA.forEach(law => {
   if (!countryLaws[c]) countryLaws[c] = [];
   countryLaws[c].push(law);
 });
+
+// ── Toggle All Regions ──
+function toggleAllRegions() {
+  const details = document.querySelectorAll('details.region-details');
+  const btn = document.getElementById('toggleAllBtn');
+  const anyOpen = Array.from(details).some(d => d.open);
+  details.forEach(d => d.open = !anyOpen);
+  btn.textContent = anyOpen ? '⊞ Expand All' : '⊟ Collapse All';
+}
 
 // ── Modal ──
 function openModal(country) {
