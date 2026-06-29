@@ -92,74 +92,55 @@
       border: 2px solid rgba(255,255,255,0.2);
     }
 
-    /* ── Country Grid ── */
-    .country-section-header {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem;
-      border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1rem;
+    /* ── Country Section collapsible ── */
+    #country-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
-    .country-section-header .section-title {
-      border-bottom: none; padding-bottom: 0; margin-bottom: 0;
-    }
-    .toggle-all-btn {
-      font-size: 0.8rem; padding: 0.35rem 0.9rem;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 6px; color: var(--muted); cursor: pointer;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .toggle-all-btn:hover { color: var(--text); border-color: var(--accent); }
-
-    /* Collapsible region blocks */
-    .country-region-block { margin-bottom: 1rem; }
-    details.region-details {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    details.region-details[open] { border-color: var(--accent); }
-    summary.region-summary {
+    details.country-section-details { width: 100%; }
+    summary.country-section-summary {
       list-style: none;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      user-select: none;
+      max-width: 1400px; margin: 0 auto;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer; user-select: none;
       transition: background 0.15s;
     }
-    summary.region-summary::-webkit-details-marker { display: none; }
-    summary.region-summary:hover { background: rgba(88,166,255,0.06); }
-    .region-summary-left {
-      display: flex; align-items: center; gap: 0.5rem;
+    summary.country-section-summary::-webkit-details-marker { display: none; }
+    summary.country-section-summary:hover { background: rgba(88,166,255,0.04); }
+    .country-summary-left {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 1.3rem; font-weight: 700;
     }
-    .region-label {
-      font-size: 1rem; font-weight: 700; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.06em;
-      display: flex; align-items: center; gap: 0.4rem;
-    }
-    .region-count-badge {
-      font-size: 0.7rem; padding: 0.1rem 0.5rem;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; color: var(--muted);
-    }
-    .region-chevron {
-      font-size: 0.8rem; color: var(--muted);
+    .country-summary-left span.section-chevron {
+      font-size: 0.85rem; color: var(--muted);
       transition: transform 0.2s;
     }
-    details.region-details[open] .region-chevron { transform: rotate(180deg); }
-    .region-body {
-      padding: 0.75rem 1rem 1rem;
-      border-top: 1px solid var(--border);
-      animation: fadeIn 0.18s ease;
+    details.country-section-details[open] summary .section-chevron {
+      transform: rotate(180deg);
     }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .country-section-body {
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 1.5rem 2rem;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ── Country Grid ── */
+    .country-region-block { margin-bottom: 2rem; }
+    .region-label {
+      font-size: 1rem; font-weight: 700; color: var(--accent);
+      margin-bottom: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem;
+    }
     .country-grid {
       display: flex; flex-wrap: wrap; gap: 0.55rem;
     }
     .country-tile {
       min-width: 130px; padding: 0.6rem 0.75rem;
       border-radius: 7px; border: 1px solid var(--border);
-      background: var(--bg);
+      background: var(--surface2);
       cursor: pointer; transition: transform 0.15s, border-color 0.2s;
       position: relative;
     }
@@ -170,12 +151,10 @@
       font-size: 0.65rem; padding: 0.1rem 0.4rem;
       border-radius: 3px; font-weight: 600;
     }
-    /* Tile border colours by dominant status */
     .tile-active    { border-left: 3px solid var(--green); }
     .tile-proposed  { border-left: 3px solid var(--yellow); }
     .tile-suspended { border-left: 3px solid var(--red); }
     .tile-none      { border-left: 3px solid var(--border); opacity: 0.55; }
-    /* Badge colours */
     .badge-adult    { background: #3a1a0a; color: #ffa657; border: 1px solid #7a3a1a; }
     .badge-social   { background: #0a2a1a; color: #3fb950; border: 1px solid #1a5a2a; }
     .badge-privacy  { background: #1a1a3a; color: #bc8cff; border: 1px solid #3a3a7a; }
@@ -325,63 +304,57 @@
 </div>
 
 <!-- ══════════════ COUNTRY GRID ══════════════ -->
-<div id="country-section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-  <div class="section">
-    <div class="country-section-header">
-      <div class="section-title">🌐 Country by Country View</div>
-      <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAllRegions()">⊟ Collapse All</button>
-    </div>
-    {% for region in regions %}
-    <div class="country-region-block">
-      <details class="region-details" open>
-        <summary class="region-summary">
-          <div class="region-summary-left">
-            <div class="region-label">
-              {% if region == 'Europe' %}🇪🇺
-              {% elif region == 'Americas' %}🌎
-              {% elif region == 'Asia-Pacific' %}🌏
-              {% elif region == 'Middle East' %}🕌
-              {% elif region == 'Africa' %}🌍
-              {% else %}🌐{% endif %}
-              {{ region }}
-            </div>
-            <span class="region-count-badge">{{ countries_by_region[region] | length }} countries</span>
-          </div>
-          <span class="region-chevron">▼</span>
-        </summary>
-        <div class="region-body">
-          <div class="country-grid">
-            {% for country, country_laws in countries_by_region[region].items() | sort %}
-            {% set dominant = country_laws | map(attribute='status') | list %}
-            {% set tile_class = 'tile-active' if 'Active' in dominant else ('tile-proposed' if 'Proposed' in dominant else ('tile-suspended' if 'Suspended' in dominant else 'tile-none')) %}
-            <div class="country-tile {{ tile_class }}" onclick="openModal('{{ country | replace("'", "&#39;") }}')">
-              <div class="tile-name">{{ country }}</div>
-              <div class="tile-tags">
-                {% set tag_types = [] %}
-                {% for law in country_laws %}
-                  {% set t = law.tags | join(' ') | lower %}
-                  {% if 'pornography' in t or 'adult' in t %}{% if 'adult' not in tag_types %}{% set _ = tag_types.append('adult') %}{% endif %}{% endif %}
-                  {% if 'social media' in t or 'social' in t %}{% if 'social' not in tag_types %}{% set _ = tag_types.append('social') %}{% endif %}{% endif %}
-                  {% if 'privacy' in t or 'gdpr' in t or 'coppa' in t %}{% if 'privacy' not in tag_types %}{% set _ = tag_types.append('privacy') %}{% endif %}{% endif %}
-                  {% if 'proposed' in law.status | lower or 'pending' in law.status | lower %}{% if 'pending' not in tag_types %}{% set _ = tag_types.append('pending') %}{% endif %}{% endif %}
-                {% endfor %}
-                {% if tag_types %}
-                  {% for tt in tag_types[:3] %}
-                  <span class="tile-badge badge-{{ tt }}">{{ tt | title }}</span>
-                  {% endfor %}
-                {% else %}
-                  <span class="tile-badge badge-general">Law ✓</span>
-                {% endif %}
-              </div>
-              <div class="tile-count">{{ country_laws | length }} law{% if country_laws | length != 1 %}s{% endif %}</div>
-            </div>
-            {% endfor %}
-          </div>
+<div id="country-section">
+  <details class="country-section-details" open>
+    <summary class="country-section-summary">
+      <div class="country-summary-left">
+        🌐 Country by Country View
+      </div>
+      <span class="section-chevron">▼</span>
+    </summary>
+    <div class="country-section-body">
+      {% for region in regions %}
+      <div class="country-region-block">
+        <div class="region-label">
+          {% if region == 'Europe' %}🇪🇺
+          {% elif region == 'Americas' %}🌎
+          {% elif region == 'Asia-Pacific' %}🌏
+          {% elif region == 'Middle East' %}🕌
+          {% elif region == 'Africa' %}🌍
+          {% else %}🌐{% endif %}
+          {{ region }}
         </div>
-      </details>
+        <div class="country-grid">
+          {% for country, country_laws in countries_by_region[region].items() | sort %}
+          {% set dominant = country_laws | map(attribute='status') | list %}
+          {% set tile_class = 'tile-active' if 'Active' in dominant else ('tile-proposed' if 'Proposed' in dominant else ('tile-suspended' if 'Suspended' in dominant else 'tile-none')) %}
+          <div class="country-tile {{ tile_class }}" onclick="openModal('{{ country | replace("'", "&#39;") }}')">
+            <div class="tile-name">{{ country }}</div>
+            <div class="tile-tags">
+              {% set tag_types = [] %}
+              {% for law in country_laws %}
+                {% set t = law.tags | join(' ') | lower %}
+                {% if 'pornography' in t or 'adult' in t %}{% if 'adult' not in tag_types %}{% set _ = tag_types.append('adult') %}{% endif %}{% endif %}
+                {% if 'social media' in t or 'social' in t %}{% if 'social' not in tag_types %}{% set _ = tag_types.append('social') %}{% endif %}{% endif %}
+                {% if 'privacy' in t or 'gdpr' in t or 'coppa' in t %}{% if 'privacy' not in tag_types %}{% set _ = tag_types.append('privacy') %}{% endif %}{% endif %}
+                {% if 'proposed' in law.status | lower or 'pending' in law.status | lower %}{% if 'pending' not in tag_types %}{% set _ = tag_types.append('pending') %}{% endif %}{% endif %}
+              {% endfor %}
+              {% if tag_types %}
+                {% for tt in tag_types[:3] %}
+                <span class="tile-badge badge-{{ tt }}">{{ tt | title }}</span>
+                {% endfor %}
+              {% else %}
+                <span class="tile-badge badge-general">Law ✓</span>
+              {% endif %}
+            </div>
+            <div class="tile-count">{{ country_laws | length }} law{% if country_laws | length != 1 %}s{% endif %}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
+  </details>
 </div>
 
 <!-- ══════════════ MODAL ══════════════ -->
@@ -459,10 +432,8 @@
 
 <!-- ══════════════ DATA + SCRIPTS ══════════════ -->
 <script>
-// Inject law data for map + modal
 const LAW_DATA = {{ laws_json }};
 
-// ── Country → laws lookup ──
 const countryLaws = {};
 LAW_DATA.forEach(law => {
   const c = law.country;
@@ -470,16 +441,6 @@ LAW_DATA.forEach(law => {
   countryLaws[c].push(law);
 });
 
-// ── Toggle All Regions ──
-function toggleAllRegions() {
-  const details = document.querySelectorAll('details.region-details');
-  const btn = document.getElementById('toggleAllBtn');
-  const anyOpen = Array.from(details).some(d => d.open);
-  details.forEach(d => d.open = !anyOpen);
-  btn.textContent = anyOpen ? '⊞ Expand All' : '⊟ Collapse All';
-}
-
-// ── Modal ──
 function openModal(country) {
   const laws = countryLaws[country] || [];
   document.getElementById('modal-title').textContent = '🌍 ' + country + ' — ' + laws.length + ' law(s)';
@@ -501,7 +462,6 @@ function closeModal() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ── World Map ──
 const map = L.map('world-map', {
   center: [20, 10], zoom: 2,
   minZoom: 1, maxZoom: 6,
@@ -513,7 +473,6 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   subdomains: 'abcd', maxZoom: 19
 }).addTo(map);
 
-// Country name → approximate lat/lng
 const COORDS = {
   'United Kingdom': [55.4, -3.4],
   'European Union': [50.9, 10.5],
@@ -588,7 +547,6 @@ Object.keys(countryLaws).forEach(country => {
   marker.on('click', () => marker.openPopup());
 });
 
-// ── Nav scroll highlight ──
 const sections = ['map-section','country-section','laws-section'];
 const navLinks = document.querySelectorAll('nav a');
 window.addEventListener('scroll', () => {
@@ -602,7 +560,6 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-// ── Card filter ──
 function filterCards() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const region = document.getElementById('regionFilter').value;
