@@ -275,12 +275,12 @@
     <div class="num">{{ stats.total }}</div>
     <div class="label">Total Laws</div>
   </div>
-  {% for region, count in stats.by_region.items() | sort %}
+  <!-- {% for region, count in stats.by_region.items() | sort %}
   <div class="stat-card">
     <div class="num">{{ count }}</div>
     <div class="label">{{ region }}</div>
   </div>
-  {% endfor %}
+  {% endfor %} -->
   {% for status, count in stats.by_status.items() | sort %}
   <div class="stat-card">
     <div class="num" style="color: {% if status == 'Active' %}var(--green){% elif status == 'Proposed' %}var(--yellow){% elif status == 'Suspended' %}var(--red){% else %}var(--purple){% endif %}">{{ count }}</div>
