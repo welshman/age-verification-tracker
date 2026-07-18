@@ -1,5 +1,21 @@
 [
   {
+    "id": "3ce8f04b5e",
+    "title": "TikTok faces Ofcom investigation over child age checks",
+    "country": "UK",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-07-16",
+    "summary": "It follows a review by the regulator in May that criticised the platform for not being \"safe enough\" for children.",
+    "fines": "See source for details",
+    "authority": "BBC Tech",
+    "url": "https://www.bbc.co.uk/news/articles/ce8l1zk9dk9o?at_medium=RSS&at_campaign=rss",
+    "tags": [
+      "age check"
+    ],
+    "last_updated": "2026-07-18"
+  },
+  {
     "id": "f290c7280c",
     "title": "EPIC Applauds the Massachusetts Senate for Passing Platform Design Regulations",
     "country": "USA",
