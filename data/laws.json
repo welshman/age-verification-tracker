@@ -1,5 +1,37 @@
 [
   {
+    "id": "de6faa9746",
+    "title": "EPIC, Coalition Urge Senate Commerce Committee to Advance Youth AI Privacy Act",
+    "country": "USA",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-08-04",
+    "summary": "On Wednesday, the Senate Commerce Committee will consider the Youth AI Privacy Act, important legislation that would establish federal privacy and safety protections for minors using AI chatbots. EPIC and a coalition of leading consumer and child safety advocacy organizations are urging the Committee to advance this important legislation.",
+    "fines": "See source for details",
+    "authority": "EPIC",
+    "url": "https://epic.org/epic-coalition-urge-senate-commerce-committee-to-advance-youth-ai-privacy-act/",
+    "tags": [
+      "minor"
+    ],
+    "last_updated": "2026-08-05"
+  },
+  {
+    "id": "b4b5ed677d",
+    "title": "Illinois Governor Signs Age-Appropriate Design Code into Law",
+    "country": "USA",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-07-31",
+    "summary": "On Friday, Governor JB Pritzker signed into law the Children’s Social Media Safety Act, a significant piece of legislation that regulates harmful platform design for minors, such as addictive feeds and overnight push notifications.",
+    "fines": "See source for details",
+    "authority": "EPIC",
+    "url": "https://epic.org/illinois-governor-signs-age-appropriate-design-code-into-law/",
+    "tags": [
+      "minor"
+    ],
+    "last_updated": "2026-08-05"
+  },
+  {
     "id": "7515bd3618",
     "title": "Ofcom unable to take further legal action against suicide forum",
     "country": "UK",
