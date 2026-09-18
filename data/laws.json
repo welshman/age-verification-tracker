@@ -1,5 +1,39 @@
 [
   {
+    "id": "7ee66b74dc",
+    "title": "EU KIDS Act to restrict social media platforms’ access to children in the EU",
+    "country": "Europe",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2026-09-17",
+    "summary": "EU KIDS Act to restrict social media platforms’ access to children in the EU Anonymous (not verified) Thu, 09/17/2026 - 09:36 The European Commission has adopted the EU KIDS Act to enhance the online safety of children throughout the Union. The proposal prohibits social media platforms from accessing children under the age of 13 and sets an EU-wide minimum age for minors to open an account of their own at the age of 15, thereby ensuring a gradual approach. The KIDS Act also reverses the burden o",
+    "fines": "See source for details",
+    "authority": "EU Digital Strategy",
+    "url": "https://digital-strategy.ec.europa.eu/en/news/eu-kids-act-restrict-social-media-platforms-access-children-eu",
+    "tags": [
+      "online safety",
+      "minor"
+    ],
+    "last_updated": "2026-09-18"
+  },
+  {
+    "id": "8a5c2728e5",
+    "title": "Proposal for EU KIDS Act - 'EU Keeping Internet Digital Spaces Accountable and Trustworthy'",
+    "country": "Europe",
+    "region": "Europe",
+    "status": "Active",
+    "effective_date": "2026-09-17",
+    "summary": "Proposal for EU KIDS Act - 'EU Keeping Internet Digital Spaces Accountable and Trustworthy' Anonymous (not verified) Thu, 09/17/2026 - 09:21 This proposal seeks to protect minors from risky digital services and AI systems, uphold the digital single market and maintain a coherent regulatory framework and enforcement structure for the protection of minors online. The proposal recognises the risks that minors face on certain online social networking services and video-sharing platforms and therefor",
+    "fines": "See source for details",
+    "authority": "EU Digital Strategy",
+    "url": "https://digital-strategy.ec.europa.eu/en/library/proposal-eu-kids-act-eu-keeping-internet-digital-spaces-accountable-and-trustworthy",
+    "tags": [
+      "online safety",
+      "minor"
+    ],
+    "last_updated": "2026-09-18"
+  },
+  {
     "id": "b695fb7669",
     "title": "EPIC Commends California Legislature for Regulating Addictive Social Media Design Instead of Banning Minors’ Access",
     "country": "USA",
