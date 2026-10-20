@@ -1,14 +1,14 @@
 {
-  "total": 46,
+  "total": 47,
   "by_region": {
+    "Europe": 14,
     "Global": 27,
-    "Europe": 13,
     "Americas": 4,
     "Asia-Pacific": 2
   },
   "by_status": {
-    "Active": 37,
+    "Active": 38,
     "Proposed": 9
   },
-  "last_updated": "2026-10-17 10:27 UTC"
+  "last_updated": "2026-10-20 11:16 UTC"
 }
