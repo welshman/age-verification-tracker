@@ -1,5 +1,21 @@
 [
   {
+    "id": "c33a921bf2",
+    "title": "Ofcom outlines age check methods ahead of social media ban for under-16s",
+    "country": "UK",
+    "region": "Global",
+    "status": "Active",
+    "effective_date": "2026-10-29",
+    "summary": "Ofcom says photo and digital ID, banking checks or facial age estimation can help prove someone is 16 or over.",
+    "fines": "See source for details",
+    "authority": "BBC Tech",
+    "url": "https://www.bbc.co.uk/news/articles/c6ly3027820lo?at_medium=RSS&at_campaign=rss",
+    "tags": [
+      "age check"
+    ],
+    "last_updated": "2026-10-29"
+  },
+  {
     "id": "d963cf08fb",
     "title": "EPIC, Tech Justice Law, and Scholars Urge Ninth Circuit to Reject Big Tech’s Claim That Addictive, Surveillance-Based Feeds Are Not Protected Speech",
     "country": "USA",
